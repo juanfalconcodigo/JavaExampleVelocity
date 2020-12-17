@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>${title}</title>
+	<style>
+
+.rating-container {
+  position: relative;
+}
+.rating-container .walk-container,
+.rating-container .transit-container,
+.rating-container .bike-container {
+  height: 100px;
+  width: 100px;
+  display: inline-block;
+  position: relative;
+  background: #fff;
+  border-radius: 50%;
+  box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.3);
+  margin: 0 5px;
+}
+.rating-container .walk-container a,
+.rating-container .transit-container a,
+.rating-container .bike-container a {
+  position: absolute;
+  width: 100px;
+  color: #727272;
+  text-decoration: none;
+  border-bottom: none;
+  bottom: 35px;
+  right: 0;
+  text-align: center;
+  font-weight: light;
+  font-size: 12px;
+}
+.rating-container .walk-container a:hover,
+.rating-container .transit-container a:hover,
+.rating-container .bike-container a:hover {
+  text-decoration: underline;
+}
+.rating-container svg {
+  height: 100px;
+  transform: rotate(-90deg);
+  width: 100px;
+}
+.rating-container svg .rating-progress-background {
+  fill: none;
+  stroke: #e9e9e7;
+  stroke-width: 2;
+}
+.rating-container svg .rating-progress {
+  fill: none;
+  stroke: #ff5d00;
+  stroke-dasharray: 100 100;
+  stroke-dashoffset: 100;
+  stroke-linecap: square;
+  stroke-width: 2;
+  transition: all 1.2s cubic-bezier(0.99, 0.01, 0.62, 0.94);
+}
+.rating-container svg .under-50 {
+  stroke: #ff5d00;
+}
+.rating-container svg .under-75 {
+  stroke: #ffe100;
+}
+.rating-container svg .over-75 {
+  stroke: #81ce97;
+}
+.rating-container #walk-score,
+.rating-container #transit-score,
+.rating-container #bike-score {
+  position: absolute;
+  width: 100px;
+  color: black;
+  bottom: 14px;
+  font-size: 17px;
+  text-align: center;
+}
+.rating-container .transit-icon .fa,
+.rating-container .bike-icon .fa,
+.rating-container .walk-icon .fa {
+  position: absolute;
+  bottom: 50px;
+  right: 0;
+  width: 100px;
+  text-align: center;
+  font-size: 40px;
+}
+
+	</style>
+</head>
+<body>
+	#foreach($person in $people)
+		<p>$person.getName() - $person.getAge()</p>
+	#end
+	
+	<div class="rating-container">
+  <div class="walk-container">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="-1 -1 34 34">
+      <circle cx="16" cy="16" r="15.9155" class="rating-progress-background" />
+      <circle cx="16" cy="16" r="15.9155" class="rating-progress js-rating-progress" />
+    </svg>
+    <div class="walk-icon"><i class="fa fa-user" aria-hidden="true"></i></div>
+    <div class="walk-text"><a href="#">Walk Score</a></div>
+    <div id="walk-score"></div>
+  </div>
+
+  <div class="transit-container">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="-1 -1 34 34">
+      <circle cx="16" cy="16" r="15.9155" class="rating-progress-background" />
+      <circle cx="16" cy="16" r="15.9155" class="rating-progress js-rating-progress" />
+    </svg>
+    <div class="transit-icon"><i class="fa fa-bus" aria-hidden="true"></i></div>
+    <div class="transit-text"><a href="#">Transit Score</a></div>
+    <div id="transit-score"></div>
+  </div>
+
+  <div class="bike-container">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="-1 -1 34 34">
+      <circle cx="16" cy="16" r="15.9155" class="rating-progress-background" />
+      <circle cx="16" cy="16" r="15.9155" class="rating-progress js-rating-progress" />
+    </svg>
+    <div class="bike-icon"><i class="fa fa-bicycle" aria-hidden="true"></i></div>
+    <div class="bike-text"><a href="#">Bike Score</a></div>
+    <div id="bike-score"></div>
+  </div>
+</div>
+
+<script>
+var rating = [${percent}, 60, 95]
+var ratingBar = document.querySelectorAll(".js-rating-progress")
+
+document.querySelector('#walk-score').innerHTML = rating[0]
+document.querySelector('#transit-score').innerHTML = rating[1]
+document.querySelector('#bike-score').innerHTML = rating[2]
+
+document.querySelector('.walk-container .js-rating-progress').style.strokeDashoffset = 100 - rating[0]
+document.querySelector('.transit-container .js-rating-progress').style.strokeDashoffset = 100 - rating[1]
+document.querySelector('.bike-container .js-rating-progress').style.strokeDashoffset = 100 - rating[2]
+
+for (i=0; i<ratingBar.length; i++) {
+  if (rating[i] <= 50) {
+    ratingBar[i].classList.add('under-50')
+  }
+  if (50 < rating[i] && rating[i] <= 75) {
+    ratingBar[i].classList.add('under-75')
+  }
+  if (75 < rating[i]) {
+    ratingBar[i].classList.add('over-75')
+  }
+}
+</script>
+  </body>
+</body>
+</html>
